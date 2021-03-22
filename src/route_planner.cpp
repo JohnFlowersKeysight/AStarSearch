@@ -64,6 +64,8 @@ float Compare(RouteModel::Node* a, RouteModel::Node* b) {
 RouteModel::Node *RoutePlanner::NextNode() {
     sort(this->open_list.begin(), this->open_list.end(), Compare);
     RouteModel::Node* next = open_list.back();
+    open_list.pop_back();
+    return next;
 }
 
 
@@ -71,8 +73,8 @@ RouteModel::Node *RoutePlanner::NextNode() {
 // Tips:
 // - This method should take the current (final) node as an argument and iteratively follow the 
 //   chain of parents of nodes until the starting node is found.
-// - For each node in the chain, add the distance from the node to its parent to the distance variable.
-// - The returned vector should be in the correct order: the start node should be the first element
+// - For each node in the chain, add the distancefrom the node to its parent to the distance variable.
+// - The  returned vector should be in the correct order: the start node should be the first element
 //   of the vector, the end node should be the last element.
 
 std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node *current_node) {
@@ -97,7 +99,7 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
         }
         else
         {
-            distance = current_node->distance(*current_node->parent);
+            distance += current_node->distance(*current_node->parent);
             path_found.insert(path_found.begin(), *current_node);
             current_node = current_node->parent;        
         }
